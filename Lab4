@@ -1,0 +1,60 @@
+# Функція для форматування ціни
+def format_price(price):
+    return f"ціна: {price:.2f} грн"
+
+
+# Функція для перевірки наявності товарів
+def check_availability(*items):
+    store = {
+        "хліб": True,
+        "молоко": True,
+        "яйця": True,
+        "цукор": False,
+        "сіль": True,
+        "чай": True,
+        "кава": False
+    }
+
+    result = {}
+    for i in items:
+        if i in store:
+            result[i] = store[i]
+        else:
+            result[i] = False
+    return result
+
+
+# Основна функція замовлення
+def make_order():
+    prices = {
+        "хліб": 25,
+        "молоко": 35,
+        "яйця": 55,
+        "цукор": 40,
+        "сіль": 12,
+        "чай": 80,
+        "кава": 150
+    }
+
+    order = input("Введіть товари через кому: ").lower().split(", ")
+    available = check_availability(*order)
+
+    # Перевіряємо чи всі товари є
+    if all(available.values()):
+        action = input("Введіть 'купити' або 'переглянути ціну': ").lower()
+        total = sum(prices[i] for i in order)
+        if action == "переглянути ціну":
+            print(format_price(total))
+        elif action == "купити":
+            print("Дякуємо за покупку!", format_price(total))
+        else:
+            print("Невірна команда.")
+    else:
+        print("Не всі товари є в наявності.")
+        for i in available:
+            if not available[i]:
+                print(f" - {i} відсутній.")
+
+
+# Запуск програми
+make_order()
